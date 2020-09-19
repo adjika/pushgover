@@ -17,6 +17,13 @@ type RequestBody struct {
 	AppToken string `json:"token"`
 	UserKey  string `json:"user"`
 	Message  string `json:"message"`
+
+	// Optional
+	Attachment string `json:"attachment,omitempty"`
+	Device     string `json:"device,omitempty"`
+	Priority   string `json:"priority,omitempty"`
+	Title      string `json:"title,omitempty"`
+	URL        string `json:"url,omitempty"`
 }
 
 type Response struct {
