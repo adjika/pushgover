@@ -1,3 +1,3 @@
-module github.com/adjika/gopush
+module github.com/adjika/pushgover
 
 go 1.15
