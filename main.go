@@ -18,8 +18,14 @@ type RequestBody struct {
 	Message  string `json:"message"`
 }
 
+type Response struct {
+	Status int      `json:"status"`
+	Errors []string `json:"errors"`
+}
+
 func main() {
 	var reqbody RequestBody
+	var response Response
 	reqbody.AppToken = os.Getenv("PUSHGOVER_APPTOKEN")
 	reqbody.UserKey = os.Getenv("PUSHGOVER_USERKEY")
 	if len(reqbody.AppToken) == 0 {
@@ -51,4 +57,16 @@ func main() {
 		return
 	}
 	defer res.Body.Close()
+	var buf bytes.Buffer
+	_, err = buf.ReadFrom(res.Body)
+
+	if err != nil {
+		fmt.Printf("Error: Couldn't read response body")
+		return
+	}
+	err = json.Unmarshal(buf.Bytes(), &response)
+	if response.Status != 1 {
+		fmt.Println("Error: Post to API unsuccessful because of: \n", response.Errors)
+		return
+	}
 }
