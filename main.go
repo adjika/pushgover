@@ -11,6 +11,7 @@ import (
 )
 
 var baseURL string = "https://api.pushover.net/1/messages.json"
+var msgLimit int = 1024
 
 type RequestBody struct {
 	AppToken string `json:"token"`
@@ -45,6 +46,11 @@ func main() {
 	}
 
 	reqbody.Message = strings.Join(flag.Args(), " ")
+	if len(reqbody.Message) > msgLimit {
+		fmt.Println("Warning: Message too long, truncating")
+		reqbody.Message = reqbody.Message[:1023]
+	}
+
 	reqbodyJSON, err := json.Marshal(reqbody)
 	if err != nil {
 		fmt.Println("Error: Couldn't marshal reqbody into JSON")
